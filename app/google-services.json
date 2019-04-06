@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "569939593500",
+    "firebase_url": "https://alzmaate.firebaseio.com",
+    "project_id": "alzmaate",
+    "storage_bucket": "alzmaate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569939593500:android:89dd105c0517b890",
+        "android_client_info": {
+          "package_name": "com.example.android.alzmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569939593500-q1uq9fkek28u8lrbihg44o3rknlufcb6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.alzmate",
+            "certificate_hash": "f025470b0329dba9cf17d338b996c7f8de708848"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-4KvgR7yr1LPqrfncEIDHL1rjnACWQfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569939593500-2imcp514v5a930scdbqg0aualc220d4d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

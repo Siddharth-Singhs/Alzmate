@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">AlzMate</string>
+
+    //Activity sign layout Strings
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_sign_in_button">Sign In</string>
+    <string name="login_no_account">Don\'t have an account ?</string>
+    <string name="login_sign_up">Sign Up</string>
+    <string name="login_name_hint">Name</string>
+
+    //Login Actvity Strings
+    <string name="sign_in_enter_the_email">Enter the email</string>
+    <string name="sign_in_enter_the_password">Enter the password</string>
+    <string name="sign_in_login_successfully">Login In Successfully</string>
+    <string name="sign_in_login_failed">Login Failed</string>
+    <string name="sign_in_message_dialog">Login .....</string>
+    <string name="sign_in_enter_the_name">Enter the Name</string>
+    <string name="sign_up_message_dialog">Registering User .....</string>
+    <string name="sign_up_register_successful">Registerd Successful</string>
+    <string name="sign_up_registration_failed">Cannot Register</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    // Navigation Menu
+    <string name="menu_home">Home</string>
+    <string name="menu_people">People</string>
+    <string name="menu_camera">Camera</string>
+    <string name="menu_diary">Diary</string>
+    <string name="menu_chat">Chat</string>
+</resources>
