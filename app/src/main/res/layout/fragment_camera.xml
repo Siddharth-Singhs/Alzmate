@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.alzmate.Model.CameraFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
 
     <LinearLayout
@@ -39,6 +38,7 @@
             android:layout_height="wrap_content"
             android:text="Identify Face"
             android:layout_weight="2"/>
+
 
     </LinearLayout>
     </LinearLayout>

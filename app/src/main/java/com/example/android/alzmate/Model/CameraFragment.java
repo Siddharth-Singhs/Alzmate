@@ -1,14 +1,14 @@
 package com.example.android.alzmate.Model;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,9 +19,27 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.alzmate.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.UUID;
+
+import edmt.dev.edmtdevcognitiveface.Contract.Face;
+import edmt.dev.edmtdevcognitiveface.Contract.IdentifyResult;
+import edmt.dev.edmtdevcognitiveface.Contract.Person;
+import edmt.dev.edmtdevcognitiveface.FaceServiceClient;
+import edmt.dev.edmtdevcognitiveface.FaceServiceRestClient;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -35,6 +53,102 @@ public class CameraFragment extends android.support.v4.app.Fragment {
     private static int RESULT_LOAD_IMAGE = 1;
     public Uri selectedImage;
     Dialog myDialog;
+    public String name="default";
+    public String relationship;
+    public String imageURL;
+    public String bio;
+    private FaceServiceClient faceServiceClient = new FaceServiceRestClient("https://westcentralus.api.cognitive.microsoft.com/face/v1.0","18d5469e5db94a2f83503c440f3ef98c");
+    private final String personGroupId = "relatives";
+    private final String personGroupName="close relatives";
+    Face[] facesDetected;
+    public ProgressDialog progressDialog;
+    private Button detectFace;
+    private DatabaseReference identifyDatabase;
+    private FirebaseAuth mAuth;
+    class matchPeople extends AsyncTask {
+
+        @Override
+        protected Void doInBackground(Object... objects) {
+            ValueEventListener valueEventListener = identifyDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot findedPerson : dataSnapshot.getChildren()) {
+                        if (findedPerson.getKey().toString().equals(name)) {
+
+                            relationship = findedPerson.child("relation").getValue().toString();
+                            imageURL = findedPerson.child("ImgLocation").getValue().toString();
+                            bio = findedPerson.child("bio").getValue().toString();
+                            ShowPopup();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            progressDialog.dismiss();
+
+        }
+    }
+    class detectTask extends AsyncTask<InputStream,String,Face[]> {
+
+        @Override
+        protected Face[] doInBackground(InputStream... params) {
+            try{
+                progressDialog.show();
+                publishProgress("Detecting...");
+                Face[] results = faceServiceClient.detect(params[0],true,false,null);
+                if(results == null)
+                {
+                   publishProgress("Detection Finished. Nothing detected");
+                    return null;
+                }
+                else{
+                    publishProgress(String.format("Detection Finished. %d face(s) detected",results.length));
+                    return results;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Face[] faces) {
+            progressDialog.dismiss();
+
+            facesDetected = faces;
+            final UUID[] faceIds = new UUID[facesDetected.length];
+            for (int i = 0; i < facesDetected.length; i++) {
+                faceIds[i] = facesDetected[i].faceId;
+            }
+            new IdentificationTask(personGroupId).execute(faceIds);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            progressDialog.setMessage(values[0]);
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,22 +163,36 @@ public class CameraFragment extends android.support.v4.app.Fragment {
         identifyfacebtn=(Button)view.findViewById(R.id.identify_face_btn);
         photoView=(ImageView)view.findViewById(R.id.image_detect_view);
         myDialog = new Dialog(this.getContext());
-
+        mAuth= FirebaseAuth.getInstance();
+        FirebaseUser user=mAuth.getCurrentUser();
+        progressDialog=(ProgressDialog) new ProgressDialog(this.getContext());
+        identifyDatabase= FirebaseDatabase.getInstance().getReference().child("PersonAlz").child(user.getUid()).child("known-people");
         camerabtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                name="default";
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, RESULT_CAPTURE_IMAGE);
             }
         });
+
         identifyfacebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(imageBitmap!=null) {
-                    ShowPopup(view);
+                if(imageBitmap!=null && name=="default") {
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+                    new detectTask().execute(inputStream);
+                }
+                else
+                {
+                    ShowPopup();
                 }
             }
         });
+
+
 
     }
     @Override
@@ -76,11 +204,20 @@ public class CameraFragment extends android.support.v4.app.Fragment {
             photoView.setImageBitmap(imageBitmap);
         }
     }
-    public void ShowPopup(View v) {
-        TextView txtclose;
-        Button btnFollow;
+    public void ShowPopup() {
         myDialog.setContentView(R.layout.activity_identifyface);
-        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+        ImageView imageView=(ImageView)myDialog.findViewById(R.id.profile_image);
+        TextView  nameView=(TextView)myDialog.findViewById(R.id.name_get_text);
+        TextView relationshipView=(TextView)myDialog.findViewById(R.id.relationship_get_text);
+        TextView bioView=(TextView)myDialog.findViewById(R.id.bio_get_text);
+
+        nameView.setText(name);
+        relationshipView.setText(relationship);
+        bioView.setText(bio);
+
+
+        Glide.with(getContext()).load(imageURL).into(imageView);
+        TextView txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,4 +227,96 @@ public class CameraFragment extends android.support.v4.app.Fragment {
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
     }
+    private class IdentificationTask extends AsyncTask<UUID,String,IdentifyResult[]> {
+        String personGroupId;
+
+
+        public IdentificationTask(String personGroupId) {
+            this.personGroupId = personGroupId;
+        }
+
+        @Override
+        protected IdentifyResult[] doInBackground(UUID... params) {
+                progressDialog.show();
+            try{
+                publishProgress("First Sex Report");
+                /**TrainingStatus trainingStatus  = faceServiceClient.getPersonGroupTrainingStatus(this.personGroupId);
+                if(trainingStatus.status != TrainingStatus.Status.Succeeded)
+                {
+                    publishProgress("Person group training status is "+trainingStatus.status);
+                    return null;
+                }**/
+                publishProgress("Identifying...");
+
+                IdentifyResult[] results = faceServiceClient.identity(personGroupId, // person group id
+                        params // face ids
+                        ,1); // max number of candidates returned
+
+                return results;
+
+            } catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(IdentifyResult[] identifyResults) {
+            progressDialog.dismiss();
+
+            for(IdentifyResult identifyResult:identifyResults)
+            {
+                new PersonDetectionTask(personGroupId).execute(identifyResult.candidates.get(0).personId);
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            progressDialog.setMessage(values[0]);
+        }
+    }
+
+    private class PersonDetectionTask extends AsyncTask<UUID,String,Person> {
+        private String personGroupId;
+
+        public PersonDetectionTask(String personGroupId) {
+            this.personGroupId = personGroupId;
+        }
+
+        @Override
+        protected Person doInBackground(UUID... params) {
+            try{
+                publishProgress("Second Sex Report");
+
+                return faceServiceClient.getPerson(personGroupId,params[0]);
+            } catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Person person) {
+            name=person.name;
+            progressDialog.dismiss();
+            new matchPeople().execute();
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            progressDialog.setMessage(values[0]);
+        }
+    }
 }
+

@@ -71,7 +71,9 @@ public class PeopleFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+       // Bundle bundle = new Bundle();
+        //ArrayList<Person> obj = informationPerson;
+        //bundle.putSerializable("informPerson", obj);
         myDialog = new Dialog(this.getContext());
         personDisplayView=(ListView) view.findViewById(R.id.person_result_list);
         informationPerson=new ArrayList<>();
