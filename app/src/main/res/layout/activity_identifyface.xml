@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="300dp"
+    android:background="@color/cinzaclaro"
+    android:padding="5dp"
+    android:layout_gravity="center">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/txtclose"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/person_four"
+        app:srcCompat="@drawable/person_four" />
+    <TextView
+        android:id="@+id/txtclose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:text="X"
+        android:textStyle="bold"
+        android:layout_alignParentEnd="true"
+        android:layout_alignRight="@id/profile_image"
+        />
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_image"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_toStartOf="@+id/profile_image"
+        android:fontFamily="@font/nunito_semibold"
+        android:text="Name:"
+        android:textColor="#555555"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/name_get_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relationship_text"
+        android:layout_toEndOf="@+id/name_text"
+        android:fontFamily="@font/nunito_semibold"
+        android:text="Siddharth Singh:"
+        android:textColor="#555555"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/relationship_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/name_text"
+        android:layout_below="@+id/name_text"
+        android:fontFamily="@font/nunito_semibold"
+        android:text="Relationship:"
+        android:textColor="#555555"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/relationship_get_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/relationship_text"
+        android:layout_toEndOf="@+id/relationship_text"
+        android:fontFamily="@font/nunito_semibold"
+        android:text="Brother"
+        android:textColor="#555555"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/bio_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/name_text"
+        android:layout_below="@+id/relationship_text"
+        android:fontFamily="@font/nunito_semibold"
+        android:text="Status:"
+        android:textColor="#555555"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/bio_get_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relationship_text"
+        android:layout_toEndOf="@+id/name_text"
+        android:fontFamily="@font/nunito_semibold"
+        android:text="Cares about you"
+        android:textColor="#555555"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+</RelativeLayout>

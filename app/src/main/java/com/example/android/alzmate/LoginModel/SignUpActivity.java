@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText editTextName;
@@ -28,7 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button signUpButton;
     private ProgressDialog progressDialog;
-    //private DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         mAuth=FirebaseAuth.getInstance();
-        //mDatabaseReference= FirebaseDatabase.getInstance().getReference();
+        mDatabaseReference= FirebaseDatabase.getInstance().getReference();
         progressDialog=new ProgressDialog(this);
 
         editTextEmail=(EditText)findViewById(R.id.sign_up_email);
@@ -55,13 +57,16 @@ public class SignUpActivity extends AppCompatActivity {
     }
     private void saveUserInformation()
     {
-        String name=editTextName.getText().toString().trim();
-        String email=editTextEmail.getText().toString().trim();
+        String nameAlz=editTextName.getText().toString().trim();
+        String emailAlz=editTextEmail.getText().toString().trim();
 
         //UserInformation userInformation=new UserInformation(name,email);
-        //FirebaseUser user=mAuth.getCurrentUser();
+        FirebaseUser user=mAuth.getCurrentUser();
+        //mDatabaseReference.getDatabase().getReference("alzmate").child ("PersonAlz").child(user.getUid()).setValue(nameAlz);
+        //mDatabaseReference.getDatabase().getReference("alzmate").child("PersonAlz").child(user.getUid()).setValue(emailAlz);
+        mDatabaseReference.getDatabase().getReference().child("PersonAlz").child(user.getUid()).child("nameAlz").setValue(nameAlz);
+        mDatabaseReference.getDatabase().getReference().child("PersonAlz").child(user.getUid()).child("emailAlz").setValue(emailAlz);
 
-        //mDatabaseReference.getDatabase().getReference("User").child(user.getUid()).setValue(userInformation);
 
     }
     private void registerUser() {

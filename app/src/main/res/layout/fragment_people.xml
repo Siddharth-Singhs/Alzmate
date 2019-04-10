@@ -3,11 +3,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.android.alzmate.Model.PeopleFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <TextView
+        android:id="@+id/caregiver_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your CareGiver(Closest ally to trust)"
+        android:textStyle="bold"
+        android:textSize="19dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/care_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/caregiver_txt"
+            tools:srcCompat="@drawable/person_four" />
+
+        <TextView
+            android:id="@+id/care_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/care_image"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_toStartOf="@+id/care_image"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="Name:"
+            android:textColor="#555555"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/care_name_get_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/care_phone_text"
+            android:layout_toEndOf="@+id/care_name_text"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="XXXXXXXX:"
+            android:textColor="#555555"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/care_phone_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/care_name_text"
+            android:layout_below="@+id/care_name_text"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="PhoneNumber:"
+            android:textColor="#555555"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/care_phone_get_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/care_phone_text"
+            android:layout_toEndOf="@+id/care_phone_text"
+            android:fontFamily="@font/nunito_semibold"
+            android:layout_marginStart="10dp"
+            android:text="XXXX-XXXX-XXXX"
+            android:textColor="#555555"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/care_phone_call_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/known_people"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="22dp"
+            android:src="@drawable/baseline_call_black_18dp" />
+
+        <TextView
+            android:id="@+id/known_people"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="People you Know"
+            android:textStyle="bold"
+            android:textSize="19dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/care_phone_text"/>
+
+    <ListView
+        android:id="@+id/person_result_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="People Fragment" />
-
+        android:layout_below="@+id/known_people">
+    </ListView>
+    </RelativeLayout>
 </FrameLayout>

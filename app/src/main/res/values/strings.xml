@@ -29,4 +29,6 @@
     <string name="menu_camera">Camera</string>
     <string name="menu_diary">Diary</string>
     <string name="menu_chat">Chat</string>
+
+    <string name="progress_dialog">Loading</string>
 </resources>
