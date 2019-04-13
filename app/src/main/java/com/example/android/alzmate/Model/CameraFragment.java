@@ -53,7 +53,7 @@ public class CameraFragment extends android.support.v4.app.Fragment {
     private static int RESULT_LOAD_IMAGE = 1;
     public Uri selectedImage;
     Dialog myDialog;
-    public String name="default";
+    public String name="unknown";
     public String relationship;
     public String imageURL;
     public String bio;
@@ -170,7 +170,7 @@ public class CameraFragment extends android.support.v4.app.Fragment {
         camerabtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                name="default";
+                name="unknown";
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, RESULT_CAPTURE_IMAGE);
             }
@@ -179,7 +179,7 @@ public class CameraFragment extends android.support.v4.app.Fragment {
         identifyfacebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(imageBitmap!=null && name=="default") {
+                if(imageBitmap!=null && name=="unknown") {
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
                     ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
@@ -187,6 +187,7 @@ public class CameraFragment extends android.support.v4.app.Fragment {
                 }
                 else
                 {
+                    photoView.setImageBitmap(imageBitmap);
                     ShowPopup();
                 }
             }
@@ -204,6 +205,20 @@ public class CameraFragment extends android.support.v4.app.Fragment {
             photoView.setImageBitmap(imageBitmap);
         }
     }
+    public void UnknownShowPopup()
+    {
+        myDialog.setContentView(R.layout.unknownface);
+        ImageView imageView=(ImageView)myDialog.findViewById(R.id.profile_image);
+        imageView.setImageBitmap(imageBitmap);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+    }
+    public void NoShowPopup()
+    {
+        myDialog.setContentView(R.layout.nofacedetected);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+    }
     public void ShowPopup() {
         myDialog.setContentView(R.layout.activity_identifyface);
         ImageView imageView=(ImageView)myDialog.findViewById(R.id.profile_image);
@@ -214,8 +229,6 @@ public class CameraFragment extends android.support.v4.app.Fragment {
         nameView.setText(name);
         relationshipView.setText(relationship);
         bioView.setText(bio);
-
-
         Glide.with(getContext()).load(imageURL).into(imageView);
         TextView txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
         txtclose.setOnClickListener(new View.OnClickListener() {
@@ -268,10 +281,19 @@ public class CameraFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(IdentifyResult[] identifyResults) {
             progressDialog.dismiss();
-
-            for(IdentifyResult identifyResult:identifyResults)
+            if(identifyResults!=null) {
+                try {
+                    for (IdentifyResult identifyResult : identifyResults) {
+                        new PersonDetectionTask(personGroupId).execute(identifyResult.candidates.get(0).personId);
+                    }
+                }catch (Exception e)
+                {
+                    UnknownShowPopup();
+                }
+            }
+            else
             {
-                new PersonDetectionTask(personGroupId).execute(identifyResult.candidates.get(0).personId);
+                NoShowPopup();
             }
         }
 
@@ -291,7 +313,7 @@ public class CameraFragment extends android.support.v4.app.Fragment {
         @Override
         protected Person doInBackground(UUID... params) {
             try{
-                publishProgress("Second Sex Report");
+                publishProgress("Searching the People");
 
                 return faceServiceClient.getPerson(personGroupId,params[0]);
             } catch (Exception e)
@@ -307,9 +329,9 @@ public class CameraFragment extends android.support.v4.app.Fragment {
 
         @Override
         protected void onPostExecute(Person person) {
-            name=person.name;
-            progressDialog.dismiss();
-            new matchPeople().execute();
+                name = person.name;
+                progressDialog.dismiss();
+                new matchPeople().execute();
 
         }
 

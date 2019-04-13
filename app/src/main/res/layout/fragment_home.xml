@@ -3,11 +3,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.android.alzmate.Model.HomeFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home Fragment" />
+        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/main_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/colorPrimary"/>
+    <android.support.v7.widget.CardView
+        android:id="@+id/patient_view"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="55dp"
+        android:layout_width="300dp"
+        android:layout_height="100dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:elevation="4dp"
+            android:padding="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/patient_image"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="18dp"
+                android:src="@drawable/person_four" />
+
+            <TextView
+                android:id="@+id/patient_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/patient_image"
+                android:paddingBottom="5dp"
+                android:text="Siddharth Singh"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/today_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/patient_name"
+                android:layout_toRightOf="@+id/patient_image"
+                android:text="12 APRIL 2019"
+                android:textColor="#8b8b8b" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/event_reminder_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/patient_view"
+            android:text="Todays Reminder For You"
+            android:fontFamily="@font/nunito_semibold"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_centerInParent="true"
+            android:textColor="#555555"/>
+        <ListView
+            android:id="@+id/event_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="18dp"
+            android:layout_below="@+id/event_reminder_txt">
+
+        </ListView>
+    </RelativeLayout>
 
 </FrameLayout>

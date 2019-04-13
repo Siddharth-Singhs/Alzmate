@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:background="@color/cinzaclaro"
+    android:padding="5dp"
+    android:layout_gravity="center">
+    <TextView
+        android:id="@+id/face_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NO FACE IS DETECTED IN IMAGE"
+        android:layout_centerInParent="true"
+        android:textStyle="bold"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/face_warning"
+        android:src="@drawable/ic_warning_black_24dp"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

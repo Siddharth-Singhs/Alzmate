@@ -60,12 +60,10 @@ public class SignUpActivity extends AppCompatActivity {
         String nameAlz=editTextName.getText().toString().trim();
         String emailAlz=editTextEmail.getText().toString().trim();
 
-        //UserInformation userInformation=new UserInformation(name,email);
         FirebaseUser user=mAuth.getCurrentUser();
-        //mDatabaseReference.getDatabase().getReference("alzmate").child ("PersonAlz").child(user.getUid()).setValue(nameAlz);
-        //mDatabaseReference.getDatabase().getReference("alzmate").child("PersonAlz").child(user.getUid()).setValue(emailAlz);
-        mDatabaseReference.getDatabase().getReference().child("PersonAlz").child(user.getUid()).child("nameAlz").setValue(nameAlz);
-        mDatabaseReference.getDatabase().getReference().child("PersonAlz").child(user.getUid()).child("emailAlz").setValue(emailAlz);
+        User currentUser=new User(nameAlz,emailAlz,"");
+        mDatabaseReference.getDatabase().getReference().child("PersonAlz").child(user.getUid()).child("Patient").setValue(currentUser);
+
 
 
     }

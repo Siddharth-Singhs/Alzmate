@@ -4,10 +4,26 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.alzmate.Model.DiaryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
     <TextView
+        android:id="@+id/dairy_journal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="MY JOURNAL"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/diary_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Diary Fragment" />
+        android:layout_below="@id/dairy_journal"
+        android:layout_marginTop="18dp">
 
+    </ListView>
+</RelativeLayout>
 </FrameLayout>

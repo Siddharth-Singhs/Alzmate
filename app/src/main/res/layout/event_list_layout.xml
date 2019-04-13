@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp">
+    <TextView
+        android:id="@+id/event_title_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_semibold"
+        android:textStyle="bold"
+        android:layout_marginLeft="16dp"
+        android:textSize="20sp"
+        android:textColor="#555555"
+        android:text="Today is your Friend Birthday"/>
+    <ImageView
+        android:id="@+id/event_alarm_clk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_access_alarm_black_24dp"
+        android:layout_marginEnd="18dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="1dp"/>
+
+
+
+    <TextView
+        android:id="@+id/event_body_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/event_title_txt"
+        android:layout_marginLeft="16dp"
+        android:textSize="16sp"
+        android:textColor="#555555"
+        android:text="Important Person"/>
+
+    <TextView
+        android:id="@+id/event_tine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/event_body_text"
+        android:layout_alignBottom="@+id/event_body_text"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="14dp"
+        android:textSize="16sp"
+        android:textColor="#555555"
+        android:text="10 AM"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
