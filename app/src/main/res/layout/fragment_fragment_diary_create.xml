@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Model.Fragment_diary_create">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        >
+
+        <EditText
+            android:id="@+id/etitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-black"
+            android:hint="Type Title.."
+            android:padding="10dp"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:alpha="0.3"
+            android:background="@android:color/black" />
+
+        <EditText
+            android:id="@+id/eDescription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:hint="Type Description.."
+            android:inputType="textMultiLine"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/create_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:backgroundTint="@color/colorPrimary"
+            android:foregroundGravity="center"
+            android:text="Create Note"
+            android:onClick="btnCreate"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+</FrameLayout>

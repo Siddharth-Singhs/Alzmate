@@ -2,28 +2,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.android.alzmate.Model.DiaryFragment">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/dairy_journal"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="MY JOURNAL"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
 
-    <ListView
-        android:id="@+id/diary_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/dairy_journal"
-        android:layout_marginTop="18dp">
+        <TextView
+            android:id="@+id/dairy_journal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="MY JOURNAL"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    </ListView>
-</RelativeLayout>
+        <ListView
+            android:id="@+id/diary_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/dairy_journal"
+            android:layout_marginTop="18dp">
+
+        </ListView>
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/bfab"
+            app:fab_addButtonColorNormal="@android:color/holo_blue_bright"
+            app:fab_addButtonColorPressed="@android:color/holo_blue_bright"
+            app:fab_addButtonPlusIconColor="@android:color/white"
+            app:fab_labelStyle="@style/custom_fab"
+            android:layout_width="367dp"
+            android:layout_height="561dp"
+            android:layout_gravity="end|bottom"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            >
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/Add_note"
+                app:fab_colorNormal="@android:color/white"
+                app:fab_colorPressed="@android:color/white"
+                app:fab_icon="@drawable/ic_add_black_24dp"
+                app:fab_size="mini"
+                app:fab_title="Add Note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/Add_Reminder"
+                app:fab_colorNormal="@android:color/white"
+                app:fab_colorPressed="@android:color/white"
+                app:fab_icon="@drawable/ic_add_black_24dp"
+                app:fab_size="mini"
+                app:fab_title="Add Reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+    </RelativeLayout>
 </FrameLayout>

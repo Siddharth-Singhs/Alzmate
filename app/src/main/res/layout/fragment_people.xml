@@ -10,7 +10,7 @@
         android:id="@+id/caregiver_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your CareGiver(Closest ally to trust)"
+        android:text="Your CareGiver"
         android:textStyle="bold"
         android:textSize="19dp"
         android:paddingLeft="10dp"
