@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="20dp"
+    android:minHeight="300dp"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <EditText
+            android:id="@+id/etitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif-black"
+            android:hint="Type Title.."
+            android:padding="5dp"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.3"
+            android:background="@android:color/black" />
+
+        <EditText
+            android:id="@+id/eDescription"
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:gravity="top"
+            android:layout_marginTop="4dp"
+            android:hint="Type Description.."
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            />
+
+        <Button
+            android:id="@+id/create_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="129dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:foregroundGravity="center"
+            android:onClick="btnCreate"
+            android:text="Create Note"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

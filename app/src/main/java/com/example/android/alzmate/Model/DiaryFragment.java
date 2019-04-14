@@ -7,22 +7,30 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.alzmate.CallBackInterface;
 import com.example.android.alzmate.DairyDetail.DiaryAdapter;
 import com.example.android.alzmate.DairyDetail.DiaryHolder;
+import com.example.android.alzmate.DairyDetail.MessageHolder;
 import com.example.android.alzmate.R;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,10 +40,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class DiaryFragment extends android.support.v4.app.Fragment {
     Dialog myDialog;
+    Dialog diaryCreateDialog;
     private ProgressDialog progressDialog;
     private DiaryAdapter diaryAdapter;
     private ListView dairyDisplayView;
@@ -44,19 +54,21 @@ public class DiaryFragment extends android.support.v4.app.Fragment {
     private String mCurrentTitle;
     private FirebaseUser mCurrentUser;
     private CardView dairy_card_view;
+    private FirebaseAuth fAuth;
+    private DatabaseReference fNotesDatabase;
     private FirebaseAuth mAuth;
     private Fragment_diary_create fragment_diary_create;
     private ArrayList<DiaryHolder> informationDairy;
-    CallBackInterface callBackInterface;
+    private Button btnCreate;
+    private EditText eTitle;
+    private EditText eContent ;
+    private TextView txtclose;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public void setCallBackInterface(CallBackInterface callBackInterface) {
-        this.callBackInterface = callBackInterface;
-    }
 
     @Nullable
     @Override
@@ -72,6 +84,7 @@ public class DiaryFragment extends android.support.v4.app.Fragment {
         dairyDisplayView=(ListView) view.findViewById(R.id.diary_list_view);
         informationDairy=new ArrayList<>();
         myDialog = new Dialog(this.getContext());
+        diaryCreateDialog = new Dialog(this.getContext());
         fragment_diary_create =new Fragment_diary_create();
         progressDialog=(ProgressDialog)new ProgressDialog(this.getContext());
         mAuth= FirebaseAuth.getInstance();
@@ -92,6 +105,15 @@ public class DiaryFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        Calendar cal = Calendar.getInstance();
+        String dateandtime = cal.getTime().toString();
+        final String cDate = dateandtime.split(" ")[2] + "-"+dateandtime.split(" ")[1] + "-" + dateandtime.split(" ")[5];
+        final String cTime = dateandtime.split(" ")[3].split(":")[0]+dateandtime.split(" ")[3].split(":")[1];
+        fAuth = FirebaseAuth.getInstance();
+        if(fAuth.getCurrentUser()!=null){
+            fNotesDatabase = FirebaseDatabase.getInstance().getReference().child("PersonAlz").child(fAuth.getCurrentUser().getUid()).child("diary").child(cDate).child(cTime);
+        }
+
 
 
         bfab.setOnClickListener(new View.OnClickListener() {
@@ -106,10 +128,7 @@ public class DiaryFragment extends android.support.v4.app.Fragment {
             public void onClick(View view) {
 
                 bfab.collapse();
-                //setFragement(fragment_diary_create);
-                if(callBackInterface!=null){
-                    callBackInterface.callBackMethod();
-                }
+                ShowDiaryEntryPopup();
             }
         });
 
@@ -187,6 +206,63 @@ public class DiaryFragment extends android.support.v4.app.Fragment {
         myDialog.show();
     }
 
+    private void ShowDiaryEntryPopup() {
+        diaryCreateDialog.setContentView(R.layout.dairyentrydialog);
+        final EditText eTitle = diaryCreateDialog.findViewById(R.id.etitle);
+        final EditText eContent = diaryCreateDialog.findViewById(R.id.eDescription);
+//        TextView txtclose =(TextView) diaryCreateDialog.findViewById(R.id.txt_close);
+
+        Button btn_create = diaryCreateDialog.findViewById(R.id.create_note);
+
+
+        btn_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String title = eTitle.getText().toString().trim();
+                String content = eContent.getText().toString().trim();
+
+                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(content)){
+                    createNote(content,title);
+                    diaryCreateDialog.dismiss();
+                    //setFragement(diaryFragment);
+                }
+                else {
+                    Snackbar.make(view,"Fill Empty Fields", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+//        txtclose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                diaryCreateDialog.dismiss();
+//            }
+//        });
+
+        diaryCreateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        diaryCreateDialog.show();
+    }
+
+    public void createNote(final String Content, final String Title){
+        progressDialog.setMessage("Adding To Database");
+        progressDialog.show();
+        if(fAuth.getCurrentUser()!=null){
+            MessageHolder message = new MessageHolder(Title,Content);
+            fNotesDatabase.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(),"Note Added to DataBase",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            Toast.makeText(getActivity(),"Users is not Signed In",Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
 }
+
+

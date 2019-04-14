@@ -34,7 +34,7 @@ import com.example.android.alzmate.Model.PeopleFragment;
 import java.lang.reflect.Field;
 
 
-public class MainActivity extends AppCompatActivity implements CallBackInterface,CallbackInterfaceforDiaryCreate{
+public class MainActivity extends AppCompatActivity{
     private BottomNavigationView mNavView;
     private FrameLayout mMainFrame;
     private HomeFragment homeFragment;
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements CallBackInterface
         peopleFragment = new PeopleFragment();
         cameraFragment = new CameraFragment();
         chatFragment = new ChatFragment();
+        diaryFragment=new DiaryFragment();
 
         setFragement(homeFragment);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -87,8 +88,7 @@ public class MainActivity extends AppCompatActivity implements CallBackInterface
                         currentFragment=cameraFragment;
                         return true;
                     case R.id.action_diary:
-                        setFragementforDiaryList();
-                        currentFragment=diaryFragment;
+                        setFragement(diaryFragment);
                         return true;
                     case R.id.action_chat:
                         setFragement(chatFragment);
@@ -108,28 +108,8 @@ public class MainActivity extends AppCompatActivity implements CallBackInterface
         fragmentTransaction.commit();
 
     }
-    private void setFragementforDiaryList() {
-        diaryFragment=new DiaryFragment();
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        diaryFragment.setCallBackInterface(this);
-        fragmentTransaction.replace(R.id.main_frame,diaryFragment);
-        fragmentTransaction.addToBackStack(null);
 
-        fragmentTransaction.commit();
 
-    }
-    private void setFragementforDiaryCreate() {
-        fragment_diary_create = new Fragment_diary_create();
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragment_diary_create.setCallBackInterface(this);
-        fragmentTransaction.replace(R.id.main_frame,fragment_diary_create);
-        //fragmentTransaction.addToBackStack(null);
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        // this will clear the back stack and displays no animation on the screen
-        //fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        fragmentTransaction.commit();
-
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
@@ -166,22 +146,8 @@ public class MainActivity extends AppCompatActivity implements CallBackInterface
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
         }
     }
-    @Override
-    public void callBackMethod() {
-        Toast.makeText(this,"clicked for CallbackDiary Fragment",Toast.LENGTH_SHORT).show();
-        setFragementforDiaryCreate();
-    }
 
-    @Override
-    public void callbackmethodforDiaryCreate() {
-        Toast.makeText(this,"clicked for Callbackfor Diary Create",Toast.LENGTH_SHORT).show();
-        setFragementforDiaryList();
 
-    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }
 
