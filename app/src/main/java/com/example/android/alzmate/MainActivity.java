@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements CallBackInterface
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private LocationManager locationManager;
     private String provider;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,18 +76,23 @@ public class MainActivity extends AppCompatActivity implements CallBackInterface
                 switch (item.getItemId()) {
                     case R.id.action_home:
                         setFragement(homeFragment);
+                        currentFragment=homeFragment;
                         return true;
                     case R.id.action_people:
                         setFragement(peopleFragment);
+                        currentFragment=peopleFragment;
                         return true;
                     case R.id.action_camera:
                         setFragement(cameraFragment);
+                        currentFragment=cameraFragment;
                         return true;
                     case R.id.action_diary:
                         setFragementforDiaryList();
+                        currentFragment=diaryFragment;
                         return true;
                     case R.id.action_chat:
                         setFragement(chatFragment);
+                        currentFragment=chatFragment;
                         return true;
                     default:
                         return false;
@@ -171,6 +177,11 @@ public class MainActivity extends AppCompatActivity implements CallBackInterface
         Toast.makeText(this,"clicked for Callbackfor Diary Create",Toast.LENGTH_SHORT).show();
         setFragementforDiaryList();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
 

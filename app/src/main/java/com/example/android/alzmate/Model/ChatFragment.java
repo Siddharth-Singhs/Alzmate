@@ -1,5 +1,7 @@
 package com.example.android.alzmate.Model;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class ChatFragment extends android.support.v4.app.Fragment {
     public ImageButton sendButton;
@@ -74,6 +79,7 @@ public class ChatFragment extends android.support.v4.app.Fragment {
         mChatReference= FirebaseDatabase.getInstance().getReference().child("PersonAlz").child(mCurrentUser.getUid());
         mChatDisplayReference= FirebaseDatabase.getInstance().getReference().child("PersonAlz").child(mCurrentUser.getUid()).child("ChatMessage");
         mCareTakerReference=FirebaseDatabase.getInstance().getReference().child("PersonAlz").child(mCurrentUser.getUid()).child("care-Taker");
+        
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
